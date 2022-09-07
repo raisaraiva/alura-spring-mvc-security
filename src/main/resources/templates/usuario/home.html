@@ -1,0 +1,80 @@
+<html lang="pt">
+	<head th:replace="~{base :: head}">
+		<title></title>
+	</head>
+
+	<body>
+		<div th:replace="~{base :: logo}"></div>
+
+		<div class="container">
+			<div th:replace="~{base :: titulo('Meus Pedidos')}"></div>
+
+			<nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+				<div class="navbar-nav">
+					<a th:classappend="${status} == null ? 'active'" th:href="@{/usuario/pedido}" class="nav-item nav-link">Todos</a>
+					<a th:classappend="${status} == 'aguardando' ? 'active'" th:href="@{/usuario/pedido/aguardando}" class="nav-item nav-link">Aguardando</a>
+					<a th:classappend="${status} == 'aprovado' ? 'active'" th:href="@{/usuario/pedido/aprovado}" class="nav-item nav-link">Aprovado</a>
+					<a th:classappend="${status} == 'entregue' ? 'active'" th:href="@{/usuario/pedido/entregue}" class="nav-item nav-link">Entregue</a>
+				</div>
+
+				<a th:href="@{/pedido/formulario}">
+					<button class="btn btn-outline-secondary my-2 my-sm-0">Novo</button>
+				</a>
+			</nav>
+
+			<div class="card mb-3" th:each="pedido : ${pedidos}">
+				<th:block th:switch="${pedido.status.name()}">
+					<div th:case="'AGUARDANDO'" th:text="${pedido.nomeProduto}" class="card-header alert-warning">
+						Nome do Produto
+					</div>
+
+					<div th:case="'APROVADO'" th:text="${pedido.nomeProduto}" class="card-header alert-success">
+						Nome do Produto
+					</div>
+
+					<div th:case="'ENTREGUE'" th:text="${pedido.nomeProduto}" class="card-header alert-dark">
+						Nome do Produto
+					</div>
+				</th:block>
+
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12 col-sm-8 mb-3">
+							<div class="row ">
+								<div class="col-md-5">
+									Valor: <span th:if="${pedido.valorNegociado} != null" th:text="${'R$ ' + #numbers.formatDecimal(pedido.valorNegociado, 3, 'POINT', 2, 'COMMA')}">200,99</span>
+								</div>
+
+								<div class="col-md-6">
+									Data da entrega: <span th:text="${#temporals.format(pedido.dataDaEntrega, 'dd/MM/yyyy')}">10/02/2020</span>
+								</div>
+							</div>
+
+							<div>Produto</div>
+
+							<div>
+								<label>
+									<input th:value="${pedido.urlProduto}" class="form-control" value="url do produto"/>
+								</label>
+							</div>
+
+							<div>Descrição</div>
+
+							<div>
+								<label>
+									<textarea th:text="${pedido.descricao}" class="form-control">descrição do pedido</textarea>
+								</label>
+							</div>
+						</div>
+
+						<div class="col-12 col-sm-4">
+							<div>
+								<img th:src="${pedido.urlImagem}" class="img-thumbnail" src="" alt="img"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

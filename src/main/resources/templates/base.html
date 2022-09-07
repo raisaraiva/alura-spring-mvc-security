@@ -1,0 +1,47 @@
+<head th:fragment="head" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <meta charset="UTF-8"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+
+    <style>
+        .logo-container {
+            background-color: #47bcff;
+            color: #FFF;
+        }
+
+        .logo {
+            font-family: 'Handlee', cursive;
+            font-size: 2.5rem;
+        }
+    </style>
+
+	<title></title>
+</head>
+
+<div th:fragment="logo">
+    <div class="logo-container p-3 d-flex justify-content-between">
+        <span class="logo">Spring MVC (security)</span>
+
+        <span class="wt-3">
+            <a sec:authorize="!isAuthenticated()" class="text-light" href="/login">Entrar</a>
+
+            <a sec:authorize="isAuthenticated()" class="text-light" href="#" onclick="document.querySelector('#form-login').submit()">Sair</a>
+
+            <form id="form-login" th:action="@{/logout}" method="post"></form>
+        </span>
+    </div>
+
+    <nav class="nav">
+        <a th:href="@{/home}" class="nav-link">Inicial</a>
+
+        <a th:href="@{/oferta}" class="nav-link">Faça sua oferta</a>
+
+        <a sec:authorize="isAuthenticated()" th:href="@{/usuario/pedido}" class="nav-link">Meus pedidos</a>
+    </nav>
+</div>
+
+<div th:fragment="titulo(valor)" class="jumbotron mb-0 mt-2">
+    <h1 class="display-4" th:text="${valor}"></h1>
+</div>
